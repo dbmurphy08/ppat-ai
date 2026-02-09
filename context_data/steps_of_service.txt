@@ -1,0 +1,7 @@
+# Steps of Service
+
+1. **The Greet**: Greet every guest within 30 seconds of entering or sitting. "Welcome to Patterson Park!"
+2. **The Drink Order**: Suggest a signature cocktail or a local draft.
+3. **Check Back**: Check back after 2 bites or 2 minutes (2 minute check on drinks).
+4. **Pre-Bus**: Clear empty glasses and trash immediately. A clean table is a happy table.
+5. **The Send Off**: Thank them for coming and invite them back for a specific upcoming event.

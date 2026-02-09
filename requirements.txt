@@ -1,0 +1,7 @@
+streamlit
+google-genai
+google-api-python-client
+google-auth-oauthlib
+google-auth
+openpyxl
+python-dateutil

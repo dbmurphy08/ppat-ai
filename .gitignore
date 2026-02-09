@@ -1,0 +1,32 @@
+# Secrets & credentials (NEVER commit these)
+secrets_config.py
+credentials.json
+token_*.json
+DailyBriefing Help file.txt
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Session data (ephemeral, regenerated at runtime)
+bar_memory.json
+cocktail_history.json
+party_history.json
+
+# Notebooks (not needed for web deploy)
+*.ipynb
+.ipynb_checkpoints/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+
+# Claude Code local config
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+nul
