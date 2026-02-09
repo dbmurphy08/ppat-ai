@@ -292,7 +292,7 @@ Flag any scheduling conflicts with existing calendar events.
 """
 
         self.log("GEMINI", f"Prompt built — {len(prompt)} chars (including history context)", "info")
-        self.log("GEMINI", "Sending to model='gemini-2.0-flash-exp'...", "info")
+        self.log("GEMINI", "Sending to model='gemini-pro-latest'...", "info")
 
         try:
             response = self.client.models.generate_content(
@@ -302,19 +302,8 @@ Flag any scheduling conflicts with existing calendar events.
             self.log("GEMINI", f"Response received — {len(response.text)} chars", "ok")
             return response.text
         except Exception as e:
-            self.log("GEMINI", f"Primary model error: {e}", "warn")
-            self.log("GEMINI", "Falling back to model='gemini-pro-latest'...", "warn")
-            # Fallback
-            try:
-                response = self.client.models.generate_content(
-                    model='gemini-pro-latest',
-                    contents=prompt
-                )
-                self.log("GEMINI", f"Fallback response received — {len(response.text)} chars", "ok")
-                return response.text
-            except Exception as e2:
-                self.log("GEMINI", f"Fallback also failed: {e2}", "err")
-                return f"Error generating seasonal plan: {e}"
+            self.log("GEMINI", f"Model error: {e}", "err")
+            return f"Error generating seasonal plan: {e}"
 
     def refine_plan(self, current_plan, user_feedback):
         self.log("PARTY", "Refining plan with user feedback...", "info")
@@ -346,28 +335,18 @@ and set menu prices between $10-$14 targeting 15% cost of goods. Use mid-tier li
 """
 
         self.log("GEMINI", f"Refine prompt built — {len(prompt)} chars", "info")
-        self.log("GEMINI", "Sending to model='gemini-2.0-flash-exp'...", "info")
+        self.log("GEMINI", "Sending to model='gemini-pro-latest'...", "info")
 
         try:
             response = self.client.models.generate_content(
-                model='gemini-2.0-flash-exp',
+                model='gemini-pro-latest',
                 contents=prompt
             )
             self.log("GEMINI", f"Response received — {len(response.text)} chars", "ok")
             return response.text
         except Exception as e:
-            self.log("GEMINI", f"Primary model error: {e}", "warn")
-            self.log("GEMINI", "Falling back to model='gemini-pro-latest'...", "warn")
-            try:
-                response = self.client.models.generate_content(
-                    model='gemini-pro-latest',
-                    contents=prompt
-                )
-                self.log("GEMINI", f"Fallback response received — {len(response.text)} chars", "ok")
-                return response.text
-            except Exception as e2:
-                self.log("GEMINI", f"Fallback also failed: {e2}", "err")
-                return f"Error refining plan: {e}"
+            self.log("GEMINI", f"Model error: {e}", "err")
+            return f"Error refining plan: {e}"
 
 
 def main():

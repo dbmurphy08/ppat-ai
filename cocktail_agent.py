@@ -275,30 +275,21 @@ Include the updated **Menu Summary** table at the end.
         return self._call_model(prompt)
 
     # ------------------------------------------------------------------
-    # Model call with fallback
+    # Model call
     # ------------------------------------------------------------------
     def _call_model(self, prompt):
         self.log("GEMINI", f"Prompt built — {len(prompt)} chars", "info")
+        self.log("GEMINI", "Sending to model='gemini-pro-latest'...", "info")
         try:
             response = self.client.models.generate_content(
-                model="gemini-2.0-flash-exp",
+                model="gemini-pro-latest",
                 contents=prompt,
             )
             self.log("GEMINI", f"Response received — {len(response.text)} chars", "ok")
             return response.text
         except Exception as e:
-            self.log("GEMINI", f"Primary model error: {e}", "warn")
-            self.log("GEMINI", "Falling back to gemini-pro-latest...", "warn")
-            try:
-                response = self.client.models.generate_content(
-                    model="gemini-pro-latest",
-                    contents=prompt,
-                )
-                self.log("GEMINI", f"Fallback response — {len(response.text)} chars", "ok")
-                return response.text
-            except Exception as e2:
-                self.log("GEMINI", f"Fallback also failed: {e2}", "err")
-                return f"Error generating cocktails: {e}"
+            self.log("GEMINI", f"Model error: {e}", "err")
+            return f"Error generating cocktails: {e}"
 
 
 # ----------------------------------------------------------------------

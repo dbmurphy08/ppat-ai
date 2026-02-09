@@ -19,7 +19,7 @@ from google import genai
 from google.genai import types
 
 MEMORY_FILE = Path(__file__).parent / "bar_memory.json"
-EXTRACTION_MODEL = "gemini-2.0-flash-exp"
+EXTRACTION_MODEL = "gemini-pro-latest"
 VALID_CATEGORIES = [
     "owner_preferences",
     "approved_decisions",
