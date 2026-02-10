@@ -59,7 +59,7 @@ def _get_cocktail_agent(api_key):
 # Page config
 # ---------------------------------------------------------------------------
 st.set_page_config(
-    page_title="PPAT Bar AI",
+    page_title="Patterson Park AI Assistant",
     page_icon=":cocktail:",
     layout="wide",
 )
@@ -68,7 +68,7 @@ st.set_page_config(
 # Sidebar
 # ---------------------------------------------------------------------------
 with st.sidebar:
-    st.title(":cocktail: PPAT Bar AI")
+    st.title(":cocktail: Patterson Park AI Assistant")
     st.caption("Patterson Park Patio Bar - AI Assistant")
     st.divider()
 
