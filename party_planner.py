@@ -8,12 +8,12 @@ Accepts an optional log_fn(category, message, level) callback for the GUI debug 
 """
 
 import os
+import csv
 import datetime
 import json
 from pathlib import Path
 from google import genai
 from google.genai import types
-import openpyxl
 
 # Import your secrets
 try:
@@ -23,7 +23,7 @@ except ImportError:
     secrets_config = None
 
 HISTORY_FILE = Path(__file__).parent / "party_history.json"
-INVENTORY_FILE = Path(__file__).parent / "context_data" / "Patterson_Inventory.xlsx"
+PRICES_CSV = Path(__file__).parent / "context_data" / "liquor_prices.csv"
 
 
 def _noop_log(category, message, level="info"):
@@ -50,28 +50,20 @@ class PartyPlanningAgent:
         self.history = self.load_history()
 
     def _load_liquor_inventory(self):
-        """Load liquor names and per-ounce costs from Patterson_Inventory.xlsx."""
-        if not INVENTORY_FILE.exists():
-            self.log("INVENTORY", f"Inventory file not found: {INVENTORY_FILE}", "warn")
+        """Load liquor names and per-ounce costs from liquor_prices.csv."""
+        if not PRICES_CSV.exists():
+            self.log("INVENTORY", f"Prices file not found: {PRICES_CSV}", "warn")
             return {}
 
-        self.log("INVENTORY", f"Loading liquor inventory from {INVENTORY_FILE}...", "info")
+        self.log("INVENTORY", f"Loading liquor inventory from {PRICES_CSV}...", "info")
         try:
-            wb = openpyxl.load_workbook(INVENTORY_FILE, data_only=True)
-            ws = wb["Liquor Inv"]
-
-            # Data starts at row 5 (row 1-3 are metadata/headers, row 4 is column names)
             inventory = {}
-            for row in ws.iter_rows(min_row=5, values_only=True):
-                name = row[0]
-                unit_price = row[15]  # Column index 15 = "Unit Price" (cost per ounce)
-                if name and unit_price is not None:
-                    try:
-                        inventory[str(name).strip()] = round(float(unit_price), 2)
-                    except (ValueError, TypeError):
-                        continue
-
-            wb.close()
+            with open(PRICES_CSV, newline="", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    name = row["name"].strip()
+                    price = round(float(row["unit_price"]), 2)
+                    inventory[name] = price
             self.log("INVENTORY", f"Loaded {len(inventory)} liquor items with pricing.", "ok")
             return inventory
         except Exception as e:
